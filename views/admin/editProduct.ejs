@@ -76,6 +76,22 @@
         .btn-back:hover {
             background-color: #4CAF50;
         }
+                .btn-submit {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50; /* Green */
+            color: white;
+            border-radius: 5px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+
 
     </style>
 </head>
@@ -158,22 +174,32 @@
     <main class="main-wrap">
         <header class="main-header navbar">
             <!-- Navbar Content -->
+            <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside">
+                <i class="material-icons md-apps"></i>
+            </button>
+            <ul class="nav">
+                <li class="nav-item"><a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a></li>
+                <li class="nav-item"><a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a></li>
+            </ul>
         </header>
-         <section class="content-main">
+        <section class="content-main">
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-12">
                             <h2 class="content-title">Edit Product</h2>
                         </div>
-                        <div class="col-lg-9">
+                        <div class="col-12">
                             <div class="card mb-4">
                                 <div class="card-body">
+                                    <!-- Update form action to edit endpoint and add hidden input for product ID -->
                                     <form id="product-form" action="/admin/products/edit/<%= product._id %>" method="POST" enctype="multipart/form-data">
+                                        <input type="hidden" name="product_id" value="<%= product._id %>">
+                                        
                                         <!-- Product Title -->
                                         <div class="product-form">
                                             <label for="product_name" class="form-label">Product Title</label>
-                                            <input type="text" placeholder="Type here" class="form-control" id="product_name" name="name" value="<%= product.name %>" required />
+                                            <input type="text" placeholder="Type here" class="form-control" id="product_name" name="name" required value="<%= product.name %>" />
                                         </div>
 
                                         <!-- Description -->
@@ -187,13 +213,13 @@
                                             <div class="col-lg-6">
                                                 <div class="product-form">
                                                     <label class="form-label">Regular Price</label>
-                                                    <input type="text" id="price" placeholder="" class="form-control" name="price" value="<%= product.price %>" required />
+                                                    <input type="text" id="price" placeholder="" class="form-control" name="price" required value="<%= product.price %>" />
                                                 </div>
                                             </div>
                                             <div class="col-lg-6">
                                                 <div class="product-form">
                                                     <label class="form-label">Stock Quantity</label>
-                                                    <input type="number" class="form-control" name="stock" value="<%= product.stock %>" min="0" required />
+                                                    <input type="number" class="form-control" name="stock" min="0" required value="<%= product.stock %>" />
                                                 </div>
                                             </div>
                                         </div>
@@ -203,49 +229,37 @@
                                             <label class="form-label">Category</label>
                                             <select class="form-select" name="category" required>
                                                 <% categories.forEach(category => { %>
-                                                    <option value="<%= category._id %>" <%= category._id === product.category ? 'selected' : '' %>><%= category.name %></option>
+                                                    <option value="<%= category._id %>" <%= product.category === category._id ? 'selected' : '' %>><%= category.name %></option>
                                                 <% }); %>
                                             </select>
                                         </div>
 
                                         <!-- Product Images -->
-                                        
-                                        <!-- Primary Image Section -->
-                                        <div class="form-group">
-                                            <label for="primaryImage">Main Image</label>
-                                            <input type="file" class="form-control" name="image[0]" onchange="previewPrimaryImage(event)" />
-
-                                            <% if (product.images && product.images[0]) { %>
-                                                <div>
-                                                    <label>Existing Primary Image:</label>
-                                                    <img src="<%= product.images[0] %>" id="primaryImagePreview" alt="Primary Image" style="width: 100px; height: 100px;" />
-                                                </div>
-                                            <% } %>
-                                        </div>
-
-                                        <!-- Additional Images -->
-                                        <div class="form-group">
-                                            <label for="additionalImages">Additional Images</label>
-                                            <input type="file" class="form-control" name="image[1]" onchange="previewAdditionalImages(event, 1)" />
-                                            <input type="file" class="form-control" name="image[2]" onchange="previewAdditionalImages(event, 2)" />
-                                            <input type="file" class="form-control" name="image[3]" onchange="previewAdditionalImages(event, 3)" />
-
-                                            <div id="image-preview-container">
-                                                <% if (product.images && product.images[1]) { %>
-                                                    <img src="<%= product.images[1] %>" class="image-preview" id="additionalImagePreview1" />
-                                                <% } %>
-                                                <% if (product.images && product.images[2]) { %>
-                                                    <img src="<%= product.images[2] %>" class="image-preview" id="additionalImagePreview2" />
-                                                <% } %>
-                                                <% if (product.images && product.images[3]) { %>
-                                                    <img src="<%= product.images[3] %>" class="image-preview" id="additionalImagePreview3" />
+                                        <div class="product-form">
+                                            <label class="form-label" style="color: rgb(0, 0, 0);">Product Images 4</label>
+                                            <div class="row">
+                                                <% for (let i = 0; i < 4; i++) { %>
+                                                    <div class="col-lg-3">
+                                                        <label class="form-label" style="color: black;"><%= i === 0 ? 'Display image' : 'Other images' %></label>
+                                                        <input type="file" class="form-control" name="images" onchange="previewImage(event, <%= i + 1 %>)" />
+                                                        <div id="image-preview-container-<%= i + 1 %>" class="image-preview-container">
+                                                            <% if (product.images[i]) { %>
+                                                                <img src="<%= product.images[i] %>" class="image-preview" />
+                                                            <% } %>
+                                                        </div>
+                                                    </div>
+                                                    
                                                 <% } %>
                                             </div>
                                         </div>
-                                          <br> <br>
-                                        <button type="submit" class="btn-back">Save Changes</button>
+
+                                        <!-- Submit Buttons -->
+                                        <div class="text-center">
+                                            <br>
+                                            <button type="submit" class="btn btn-submit rounded font-sm hover-up">Update Product</button>
+                                            <a href="/admin/products" class="btn btn-submit rounded font-sm hover-up">Back</a>
+                                        </div>
                                     </form>
-                                    <button class="btn-back" onclick="window.history.back();">Go Back</button>
                                 </div>
                             </div>
                         </div>
@@ -270,24 +284,27 @@
 </footer>
 
 <script>
-    // Image preview function
+    // Preview for Primary Image
     function previewPrimaryImage(event) {
-            const reader = new FileReader();
-            reader.onload = function() {
-                const output = document.getElementById('primaryImagePreview');
-                output.src = reader.result;
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
+        const output = document.getElementById('primaryImagePreview');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.style.display = 'block';
+    }
 
-        function previewAdditionalImages(event, index) {
-            const reader = new FileReader();
-            reader.onload = function() {
-                const output = document.getElementById(`additionalImagePreview${index}`);
-                output.src = reader.result;
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        }
+    // Preview for Additional Images
+    function previewImage(event, index) {
+        const output = document.getElementById(`image-preview-container-${index}`);
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(event.target.files[0]);
+        img.classList.add('image-preview');
+        
+        // Clear previous image and append new preview
+        output.innerHTML = '';
+        output.appendChild(img);
+        output.style.display = 'block';
+    }
+
+
 </script>
 
 <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>

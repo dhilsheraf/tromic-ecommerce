@@ -95,13 +95,17 @@ const editCategory = async (req, res) => {
     const { name, description } = req.body;
 
     try {
-        const category = await Category.findByIdAndUpdate(
+        const category = await Category.findById(categoryId)
+        const existCategory = await Category.findOne({name:name});
+        if(existCategory) return res.render('admin/editCategory',{category,message:"Category with this name already exist"})
+        
+        const categorys = await Category.findByIdAndUpdate(
             categoryId,
             { name, description },
             { new: true }  // This option returns the updated document
         );
 
-        if (!category) return res.status(404).send("Category not found");
+        if (!categorys) return res.status(404).send("Category not found");
         res.redirect('/admin/category'); // Redirect to the category list page after updating
     } catch (error) {
         console.error('Error updating category:', error);
