@@ -6,8 +6,7 @@ const productSchema = new mongoose.Schema({
     price: { type: Number, required: true },
     description: { type: String, required: true },
     category: { type: ObjectId , ref: 'Category', required: true },
-    primaryImage: { type: String, required: true },  // Path to the primary image
-    additionalImages: [{ type: String }],  // Array of paths to additional images
+    images: { type: [String], required: true },  
     stock: { type: Number, default: 0 },
     isDeleted: { type: Boolean, default: false }, // Soft delete flag
 }, { timestamps: true });

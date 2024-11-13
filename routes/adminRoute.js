@@ -4,7 +4,7 @@ const express = require('express');
 const router = express.Router()
 const categoryController = require("../controllers/categoryController")
 const productController = require("../controllers/productController")
-const { upload, resizeImages } = require('../middleware/upload')
+const  upload  = require('../middleware/upload')
 
 
 
@@ -30,7 +30,7 @@ router.post('/category/edit/:id', categoryController.editCategory);
 //product 
 router.get("/products", productController.getProduct)
 router.get("/products/add", productController.loadAddProduct)
-router.post("/products/add", upload, resizeImages, productController.addProduct);
+router.post("/products/add", upload.array('images',4), productController.addProduct);
 
 router.get('/products/edit/:id', productController.loadEditProduct)
 router.post('/products/edit/:id', productController.editProduct);

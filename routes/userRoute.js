@@ -23,7 +23,7 @@ router.get("/blog",userController.loadBlog);
 
 router.get("/contact",userController.loadContact);
 
-router.get("/my-account",checkUserSession,userController.loadMyAccount)
+router.get("/my-account",userController.loadMyAccount)
 
 router.get("/wishlist",checkUserSession,userController.loadWishlist)
 

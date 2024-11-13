@@ -226,7 +226,7 @@
                                                 </div>
                                             </div>
                                             <div id="image-preview-container"></div>
-                                            <span id="image-error">You need to select at least 3 images.</span>
+                                            <span id="image-error">You need to upload 4 images.</span>
                                         </div>
 
                                         <!-- Submit Buttons -->
@@ -284,7 +284,7 @@
             const selectedFiles = Array.from(fileInputs).filter(input => input.files.length > 0);
 
             // Show error if less than 3 files are selected
-            if (selectedFiles.length >= 3) {
+            if (selectedFiles.length >= 4) {
                 imageError.style.display = 'none';
             } else {
                 imageError.style.display = 'block';

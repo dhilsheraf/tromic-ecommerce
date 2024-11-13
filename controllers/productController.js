@@ -22,31 +22,32 @@ const loadAddProduct = async (req,res) =>{
 }
 
 const addProduct = async (req, res) => {
-    const { name, description, price, stock, category } = req.body;
-    const primaryImage = req.body.primaryImage;
-    const additionalImages = req.body.additionalImages;
-
     try {
+        const { name, description, price, stock, category } = req.body;
+
+        // Retrieve image URLs from Cloudinary (from req.files)
+        const images = req.files.map(file => file.path);  // Assuming multer uploads the images to Cloudinary
+
+        // Create new product
         const newProduct = new Product({
             name,
             description,
             price,
             stock,
             category,
-            primaryImage,
-            additionalImages,
+            images,  // Store Cloudinary image URLs
         });
-        console.log(primaryImage);
-        console.log(additionalImages);
-        
 
+        // Save the product to the database
         await newProduct.save();
-        res.redirect('/admin/products');  // Redirect after saving the product
+
+        // Respond with success or redirect
+        res.redirect('/admin/products');
     } catch (error) {
-        console.error('Error saving product:', error);
-        res.status(500).json({ error: "Error saving product to database" });
+        console.error(error);
+        res.status(500).send('Error while adding product');
     }
-}
+};
 
 const loadEditProduct = async (req, res) => {
     try {

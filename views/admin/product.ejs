@@ -221,9 +221,9 @@
                 <% products.forEach(product => { %>
                     <div class="product-card">
                         <!-- Display first image if available -->
-                        <% if (product.primaryImage) { %>
+                        <% if (product.images) { %>
                             <div class="image-container">
-                                <img src="<%= product.primaryImage %>" alt="<%= product.name %>" class="product-image">
+                                <img src="<%= product.images[0] %>" alt="<%= product.name %>" class="product-image">
                             </div>
                         <% } else { %>
                             <div class="image-container">

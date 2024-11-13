@@ -8,6 +8,7 @@ const session = require('express-session')
 require('dotenv').config()
 const bodyParser = require('body-parser'); 
 const passport = require("./config/passport")
+const cloudinary = require('cloudinary').v2;
 
 
 const  PORT = process.env.PORT || 8080; 
@@ -38,6 +39,17 @@ app.use(express.urlencoded({ extended: true }));
 
 connectDB()  
   
+
+
+
+// Configure Cloudinary with credentials from .env
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+
  
 app.use('/',userRoute) ;
 app.use('/admin',adminRoute)
