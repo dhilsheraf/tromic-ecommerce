@@ -14,7 +14,7 @@ router.get("/dashboard", adminController.loadAdminDashboard)
 
 // users 
 router.get("/users", adminController.loadUsers)
-router.post('/users/:action/:id', adminController.blockunblock)
+router.post('/users/block-unblock/:userId', adminController.blockunblock)
 
 //category
 

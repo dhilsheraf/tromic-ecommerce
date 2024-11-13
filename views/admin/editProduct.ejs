@@ -159,7 +159,7 @@
         <header class="main-header navbar">
             <!-- Navbar Content -->
         </header>
-        <section class="content-main">
+         <section class="content-main">
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="row">
@@ -211,59 +211,41 @@
                                         <!-- Product Images -->
                                         
                                         <!-- Primary Image Section -->
-<div class="form-group">
-    <label for="primaryImage">Primary Image</label>
-    <input type="file" class="form-control" name="primaryImage" onchange="previewPrimaryImage(event)" />
+                                        <div class="form-group">
+                                            <label for="primaryImage">Main Image</label>
+                                            <input type="file" class="form-control" name="image[0]" onchange="previewPrimaryImage(event)" />
 
-    <% if (product.primaryImage) { %>
-        <div>
-            <label>Existing Primary Image:</label>
-            <img src="<%= product.primaryImage %>" id="primaryImagePreview" alt="Primary Image" style="max-width: 200px; margin-top: 10px;" />
-        </div>
-    <% } else { %>
-        <img src="" id="primaryImagePreview" alt="Primary Image Preview" style="max-width: 200px; display: none; margin-top: 10px;" />
-    <% } %>
-</div>
-
-<!-- Additional Images Section (3 Inputs) -->
-<div class="form-group">
-    <label for="additionalImages">Additional Images</label>
-
-    <!-- Input 1 -->
-    <input type="file" class="form-control" name="additionalImages" onchange="previewAdditionalImage(event, 1)" />
-    <% if (product.additionalImages && product.additionalImages[0]) { %>
-        <div>
-            <label>Existing Additional Image 1:</label>
-            <img src="<%= product.additionalImages[0] %>" id="additionalImagePreview1" class="image-preview" style="max-width: 100px; margin-top: 10px;" />
-        </div>
-    <% } %>
-
-    <!-- Input 2 -->
-    <input type="file" class="form-control" name="additionalImages" onchange="previewAdditionalImage(event, 2)" />
-    <% if (product.additionalImages && product.additionalImages[1]) { %>
-        <div>
-            <label>Existing Additional Image 2:</label>
-            <img src="<%= product.additionalImages[1] %>" id="additionalImagePreview2" class="image-preview" style="max-width: 100px; margin-top: 10px;" />
-        </div>
-    <% } %>
-
-    <!-- Input 3 -->
-    <input type="file" class="form-control" name="additionalImages" onchange="previewAdditionalImage(event, 3)" />
-    <% if (product.additionalImages && product.additionalImages[2]) { %>
-        <div>
-            <label>Existing Additional Image 3:</label>
-            <img src="<%= product.additionalImages[2] %>" id="additionalImagePreview3" class="image-preview" style="max-width: 100px; margin-top: 10px;" />
-        </div>
-    <% } %>
-</div>
-
-
-                                        <!-- Submit Buttons -->
-                                        <div class="text-center">
-                                            <button type="submit" class="btn btn-submit rounded font-sm hover-up">Update Product</button>
-                                            <a href="/admin/products" class="btn btn-submit rounded font-sm hover-up">Back</a>
+                                            <% if (product.images && product.images[0]) { %>
+                                                <div>
+                                                    <label>Existing Primary Image:</label>
+                                                    <img src="<%= product.images[0] %>" id="primaryImagePreview" alt="Primary Image" style="width: 100px; height: 100px;" />
+                                                </div>
+                                            <% } %>
                                         </div>
+
+                                        <!-- Additional Images -->
+                                        <div class="form-group">
+                                            <label for="additionalImages">Additional Images</label>
+                                            <input type="file" class="form-control" name="image[1]" onchange="previewAdditionalImages(event, 1)" />
+                                            <input type="file" class="form-control" name="image[2]" onchange="previewAdditionalImages(event, 2)" />
+                                            <input type="file" class="form-control" name="image[3]" onchange="previewAdditionalImages(event, 3)" />
+
+                                            <div id="image-preview-container">
+                                                <% if (product.images && product.images[1]) { %>
+                                                    <img src="<%= product.images[1] %>" class="image-preview" id="additionalImagePreview1" />
+                                                <% } %>
+                                                <% if (product.images && product.images[2]) { %>
+                                                    <img src="<%= product.images[2] %>" class="image-preview" id="additionalImagePreview2" />
+                                                <% } %>
+                                                <% if (product.images && product.images[3]) { %>
+                                                    <img src="<%= product.images[3] %>" class="image-preview" id="additionalImagePreview3" />
+                                                <% } %>
+                                            </div>
+                                        </div>
+                                          <br> <br>
+                                        <button type="submit" class="btn-back">Save Changes</button>
                                     </form>
+                                    <button class="btn-back" onclick="window.history.back();">Go Back</button>
                                 </div>
                             </div>
                         </div>
@@ -289,14 +271,23 @@
 
 <script>
     // Image preview function
-    function previewImage(event, index) {
-        const reader = new FileReader();
-        reader.onload = function () {
-            const imageElements = document.querySelectorAll('.image-preview');
-            imageElements[index].src = reader.result;
-        };
-        reader.readAsDataURL(event.target.files[0]);
-    }
+    function previewPrimaryImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById('primaryImagePreview');
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        function previewAdditionalImages(event, index) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById(`additionalImagePreview${index}`);
+                output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
 </script>
 
 <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>

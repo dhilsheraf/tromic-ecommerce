@@ -109,7 +109,7 @@
                 color: #ffffff;
                 background: #007bff;
                 border-radius: 4px;
-                border: red;
+                
                 cursor: pointer;
                 padding: 4px 8px;
                 font-weight: 500;
@@ -427,6 +427,40 @@ table thead th {
             
             // Initialize the table by showing the first set of rows
             displayRows();
+
+            // Add an event listener for all block/unblock buttons
+            const blockButtons = document.querySelectorAll('.block-btn');
+            blockButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const userId = this.dataset.userId;  // Get user ID from data attribute
+                    const action = this.textContent.trim().toLowerCase();  // Get current action (Block/Unblock)
+
+                    // Send a request to the server to block/unblock the user
+                    fetch(`/admin/users/block-unblock/${userId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ action })  // Send action as data
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Change button text based on the new status
+                            this.textContent = action === 'block' ? 'Unblock' : 'Block';
+                            // Optional: Change the color of the button or update UI in other ways
+                            
+                        } else {
+                            alert('Failed to update block status');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred while updating the block status');
+                    });
+                });
+            });
+
             </script>
         <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
         <script src="/assets/js/vendors/bootstrap.bundle.min.js"></script>

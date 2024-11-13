@@ -58,28 +58,32 @@ const loadUsers = async (req,res) =>{
 }
 
 const blockunblock = async (req, res) => {
-    const { action, id } = req.params;
+    const userId = req.params.userId;
+    const { action } = req.body;  // 'block' or 'unblock'
 
     try {
-        const user = await User.findById(id); // Ensure you have the correct user model imported
+        const user = await User.findById(userId);
+
         if (!user) {
-            return res.status(404).json({ success: false, message: "User not found" });
+            return res.status(404).json({ success: false, message: 'User not found' });
         }
 
         if (action === 'block') {
-            user.isBlocked = true; // Assuming you have an isblocked field
+            user.isBlocked = true;  // Set the user as blocked
         } else if (action === 'unblock') {
-            user.isBlocked = false;
+            user.isBlocked = false;  // Set the user as unblocked
         } else {
-            return res.status(400).json({ success: false, message: "Invalid action" });
+            return res.status(400).json({ success: false, message: 'Invalid action' });
         }
 
-        await user.save(); // Save the changes
-        return res.json({ success: true, message: `User ${action}ed successfully` });
+        await user.save();  // Save the updated user status
+
+        res.json({ success: true });
     } catch (error) {
-        return res.status(500).json({ success: false, message: error.message });
+        console.error(error);
+        res.status(500).json({ success: false, message: 'An error occurred while updating block status' });
     }
-}
+};
 
 
 module.exports = {

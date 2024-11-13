@@ -161,7 +161,7 @@
                                             <div class="product-img img-zoom-effect">
                                                 <!-- Dynamically load the primary image for each product -->
                                                 <a href="/product/<%= product._id %>">
-                                                    <img class="img-full" src="<%= product.primaryImage %>" alt="<%= product.name %>">
+                                                    <img class="img-full" src="<%= product.images[0] %>" alt="<%= product.name %>">
                                                 </a>
                                             </div>
                                             <div class="product-content">
