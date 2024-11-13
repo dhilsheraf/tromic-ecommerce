@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Nest Dashboard</title>
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta property="og:title" content="" />
+        <meta property="og:type" content="" />
+        <meta property="og:url" content="" />
+        <meta property="og:image" content="" />
+        <!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg" />
+        <!-- Template CSS -->
+        <link href="/assets/css/main.css?v=1.1" rel="stylesheet" type="text/css" />
+    
+        <style>
+            /* Basic styling for product grid */
+            .product-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .product-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            width: 30%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+        }
+        .product-card img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .product-card h3 {
+            margin: 10px 0;
+            font-size: 1.2em;
+            color: #333;
+        }
+        .product-card .price {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .product-card .description {
+            font-size: 0.9em;
+            color: #555;
+            margin: 10px 0;
+        }
+        .product-card .actions {
+            margin-top: 10px;
+        }
+        .product-card .btn {
+            background-color: #28a745;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+        .product-card .btn-edit {
+            background-color: #ffc107;
+            color: #333;
+        }
+        .product-card .btn-delete {
+            background-color: #dc3545;
+        }
+        .product-card .btn:hover {
+            opacity: 0.9;
+        }
+        .btn.btn-submit {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.btn.btn-submit:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+        </style>
+    
+    </head>
+
+    <body>
+        <div class="screen-overlay"></div>
+        <aside class="navbar-aside" id="offcanvas_aside">
+            <div class="aside-top">
+                <a href="/admin/dashboard" class="brand-wrap">
+                    <img src="/assets/imgs/theme/logo.svg" class="logo" alt="Nest Dashboard" />
+                </a>
+                <div>
+                    <button class="btn btn-icon btn-aside-minimize"><i class="text-muted material-icons md-menu_open"></i></button>
+                </div>
+            </div>
+            <nav>
+                <ul class="menu-aside">
+                    <li class="menu-item">
+                        <a class="menu-link" href="/admin/dashboard">
+                            <i class="icon material-icons md-home"></i>
+                            <span class="text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" href="/admin/users">
+                            <i class="icon material-icons md-person"></i>
+                            <span class="text">Users</span>
+                        </a>
+                        
+                    </li>
+                    <li class="menu-item  active">
+                        <a class="menu-link" href="/admin/product">
+                            <i class="icon material-icons md-add_box"></i>
+                            <span class="text">Products</span>
+                        </a>
+                        
+                    </li>
+                    <li class="menu-item ">
+                        <a class="menu-link" href="/admin/category">
+                            <i class="icon material-icons md-store"></i>
+                            <span class="text">Category</span>
+                        </a>
+                       
+                    </li>
+                    <li class="menu-item ">
+                        <a class="menu-link" href="">
+                            <i class="icon material-icons md-add_box"></i>
+                            <span class="text">Add product</span>
+                        </a>
+                       
+                    </li>
+                    <li class="menu-item ">
+                        <a class="menu-link" href="#">
+                            <i class="icon material-icons md-monetization_on"></i>
+                            <span class="text">Transactions</span>
+                        </a>
+                       
+                    </li>
+                    <li class="menu-item ">
+                        <a class="menu-link" href="#">
+                            <i class="icon material-icons md-person"></i>
+                            <span class="text">Account</span>
+                        </a>
+                       
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" href="#">
+                            <i class="icon material-icons md-comment"></i>
+                            <span class="text">Reviews</span>
+                        </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" href="#"> <i class="icon material-icons md-stars"></i> 
+                            <span class="text">Brands</span>
+                         </a>
+                    </li>
+                    <li class="menu-item">
+                        <a class="menu-link" disabled href="#">
+                            <i class="icon material-icons md-pie_chart"></i>
+                            <span class="text">Statistics</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="main-wrap">
+            <header class="main-header navbar">
+                <div class="col-search">
+                  
+                </div>
+                <div class="col-nav">
+                    <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"><i class="material-icons md-apps"></i></button>
+                    <ul class="nav">
+                       
+                        <li class="nav-item">
+                            <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </header>
+            <section class="content-main">
+                
+                <div class="card mb-4">
+                    <header class="card-header">
+                        <div class="row gx-3">
+                            <div class="col-lg-4 col-md-6 me-auto">
+                                <input type="text" placeholder="Search..." class="form-control" />
+                            </div>
+                          
+                            
+                        </div>
+                    </header>
+                    <!-- card-header end// -->
+                    <div class="card-body">
+    <div class="table-responsive">
+        <div class="container">
+            <h1>Product List</h1>
+
+            <!-- Button to add a new product -->
+            <div style="margin-bottom: 20px;">
+                <a href="/admin/products/add" class="btn btn-submit">Add New Product</a>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="product-grid">
+                <% products.forEach(product => { %>
+                    <div class="product-card">
+                        <!-- Display first image if available -->
+                        <% if (product.primaryImage) { %>
+                            <div class="image-container">
+                                <img src="<%= product.primaryImage %>" alt="<%= product.name %>" class="product-image">
+                            </div>
+                        <% } else { %>
+                            <div class="image-container">
+                                <img src="/assets/imgs/no-image.jpg" alt="No Image Available" class="product-image">
+                            </div>
+                        <% } %>
+
+                        <!-- Product details -->
+                        <div class="product-details">
+                            <h3 class="product-name"><%= product.name %></h3>
+                            <p class="price">₹<%= product.price.toFixed(2) %></p>
+                            <p class="description">Stock : <%= product.stock %></p>
+                            <p class="category">Category: <%= product.category.name %></p>
+                        </div>
+
+                        <!-- Actions (Edit, Soft Delete) -->
+                        <div class="actions">
+                            <a href="/admin/products/edit/<%= product._id %>/" class="btn btn-edit">Edit</a>
+                            <form action="/admin/products/delete/<%= product._id %>" method="POST" style="display:inline;">
+                                <!-- Confirmation before deletion -->
+                                <button type="submit" class="btn btn-delete" onclick="return confirm('Are you sure you want to delete this product?');">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+
+            <!-- Message if no products found -->
+            <% if (products.length === 0) { %>
+                <p>No products available.</p>
+            <% } %>
+        </div>
+    </div>
+</div>
+                    <!-- card-body end// -->
+                </div>
+                <!-- card end// -->
+                <!-- <div class="pagination-area mt-15 mb-50">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-start">
+                            <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                            <li class="page-item"><a class="page-link" href="#">02</a></li>
+                            <li class="page-item"><a class="page-link" href="#">03</a></li>
+                            <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                            <li class="page-item"><a class="page-link" href="#">16</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div> -->
+            </section>
+            <!-- content-main end// -->
+            
+        </main>
+
+<footer class="main-footer font-xs">
+                <div class="row pb-30 pt-15">
+                    <div class="col-sm-6">
+                        <script>
+                            document.write(new Date().getFullYear());
+                        </script>
+                        &copy; Nest - HTML Ecommerce Template .
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-sm-end">All rights reserved</div>
+                    </div>
+                </div>
+            </footer>
+
+        <script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
+        <script src="/assets/js/vendors/bootstrap.bundle.min.js"></script>
+        <script src="/assets/js/vendors/select2.min.js"></script>
+        <script src="/assets/js/vendors/perfect-scrollbar.js"></script>
+        <script src="/assets/js/vendors/jquery.fullscreen.min.js"></script>
+        <!-- Main Script -->
+        <script src="/assets/js/main.js?v=1.1" type="text/javascript"></script>
+    </body>
+</html>
