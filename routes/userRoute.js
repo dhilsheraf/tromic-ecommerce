@@ -51,7 +51,7 @@ router.get("/pageNotFound",userController.pageNotFound)
 router.get("/logout",userController.logout)
 
 router.get("/products",userController.loadProduct)
-router.get('/product/:id', userController.getProductDetails);
+router.get('/products/:id', userController.getProductDetails);
 
 
 module.exports = router ;  

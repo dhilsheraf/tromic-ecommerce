@@ -30,11 +30,28 @@ router.post('/category/edit/:id', categoryController.editCategory);
 //product 
 router.get("/products", productController.getProduct)
 router.get("/products/add", productController.loadAddProduct)
-router.post("/products/add", upload.array('images',4), productController.addProduct);
+router.post("/products/add", 
+    upload.fields([
+        { name: 'images[0]', maxCount: 1 },
+        { name: 'images[1]', maxCount: 1 },
+        { name: 'images[2]', maxCount: 1 },
+        { name: 'images[3]', maxCount: 1 }
+    ]),
+    productController.addProduct
+);
+
+
+
 
 router.get('/products/edit/:id', productController.loadEditProduct)
-router.post('/products/edit/:id', upload.array("images", 4),productController.editProduct);
-
-
+router.post('/products/edit/:id', 
+    upload.fields([
+        { name: 'images[0]', maxCount: 1 },
+        { name: 'images[1]', maxCount: 1 },
+        { name: 'images[2]', maxCount: 1 },
+        { name: 'images[3]', maxCount: 1 }
+    ]),
+    productController.editProduct
+);
 
 module.exports = router

@@ -35,8 +35,8 @@
                                 <!-- Additional Images -->
                                 <% product.images.forEach(image => { %>
                                 <div class="swiper-slide">
-                                    <a href="<%= images %>" class="single-img gallery-popup">
-                                        <img class="img-full" src="<%= images %>" alt="Additional Product Image">
+                                    <a href="<%= image %>" class="single-img gallery-popup">
+                                        <img class="img-full" src="<%= image %>" alt="Additional Product Image">
                                     </a>
                                 </div>
                                 <% }); %>
@@ -44,7 +44,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 pt-9 pt-lg-0">
+                <div class="col-lg-6 ">
                     <div class="single-product-content">
                         <h2 class="title mb-3"><%= product.name %></h2>
                         <div class="coupon-section pb-3">
@@ -55,8 +55,8 @@
     
                       <!-- Display Discounted Price -->
                     <div class="price-box pb-3">
-                        <span class="original-price text-muted"><%= product.price %></span>
-                        <span class="discounted-price text-danger" id="final-price"><%= product.price %></span> <!-- Discounted Price -->
+                        <span class="original-price text-muted"><s><%= product.price %></s></span>
+                        <span class="discounted-price text-danger" id="final-price">₹  <%= product.price %></span> <!-- Discounted Price -->
                     </div>
                     
                         <!-- Stock Status -->
@@ -159,9 +159,9 @@
                                 <div class="swiper-container single-product-thumbs">
                                     <div class="swiper-wrapper">
                                         <a href="#" class="swiper-slide">
-                                            <img class="img-full" src="<%= product.primaryImage %>" alt="Product Thumbnail">
+                                            <img class="img-full" src="<%= product.images[0] %>" alt="Product Thumbnail">
                                         </a>
-                                        <% product.additionalImages.forEach(image => { %>
+                                        <% product.images.forEach((image,index) => { %>
                                             <a href="#" class="swiper-slide">
                                                 <img class="img-full" src="<%= image %>" alt="Product Thumbnail">
                                             </a>

@@ -70,42 +70,36 @@ const loadEditProduct = async (req, res) => {
 
 const editProduct = async (req, res) => {
     try {
-        const { name, description, price, stock, category, existingImages } = req.body;
+        const { product_id, name, description, price, stock, category, existingImages } = req.body;
 
-        // Initialize an array to store the updated image URLs
-        const updatedImages = existingImages ? [...existingImages] : [];
+        // Get the indexes of the images that need to be replaced
+        const imageIndexes = req.body.imageIndexes.map(index => parseInt(index, 10));
+        const images = [...existingImages]; // Start with existing images
 
-        // Check if there are new images uploaded and update them based on index
-        if (req.files && req.files.length > 0) {
-            req.files.forEach((file, index) => {
-                updatedImages[index] = file.path; 
-            });
-        }
+        // Map new uploaded images to their specified indexes
+        req.files.forEach((file, idx) => {
+            const imageIndex = imageIndexes[idx];
+            images[imageIndex] = file.path; // Replace image at this index
+        });
 
-        
-        const updatedProduct = await Product.findByIdAndUpdate(
-            req.params.id,
-            {
-                name,
-                description,
-                price,
-                stock,
-                category,
-                images: updatedImages.filter((url) => url), // Remove any undefined URLs
-            },
-            { new: true }
-        );
-
-        if (!updatedProduct) {
-            return res.status(404).send('Product not found');
-        }
+        // Update the product in the database
+        await Product.findByIdAndUpdate(product_id, {
+            name,
+            description,
+            price,
+            stock,
+            category,
+            images,
+        });
 
         res.redirect('/admin/products');
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Internal server error');
+        console.error(error.message);
+        res.status(500).json({ error: "Failed to edit product" });
     }
 };
+
+
 
 
 // const deleteProduct = async (req, res) => {

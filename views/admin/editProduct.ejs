@@ -231,30 +231,30 @@
                                         </div>
 
                                         <div class="product-form">
-                                            <label class="form-label" style="color: rgb(0, 0, 0);">Product Images 4</label>
+                                            <label class="form-label" style="color: rgb(0, 0, 0);">Product Images (4)</label>
                                             <div class="row">
                                                 <% for (let i = 0; i < 4; i++) { %>
                                                     <div class="col-lg-3">
                                                         <label class="form-label" style="color: black;"><%= i === 0 ? 'Display image' : 'Other images' %></label>
-                                        
+                                                        
                                                         <!-- Display the existing image if available -->
                                                         <% if (product.images[i]) { %>
-                                                            <img src="<%= product.images[i] %>" class="image-preview" />
-                                                            <!-- Hidden field to pass the current image URL to the back-end -->
+                                                            <img src="<%= product.images[i] %>" class="image-preview" id="image-preview-<%= i %>" />
                                                             <input type="hidden" name="existingImages[]" value="<%= product.images[i] %>">
                                                         <% } else { %>
-                                                            <!-- Empty hidden input if there’s no image -->
                                                             <input type="hidden" name="existingImages[]" value="">
                                                         <% } %>
-                                        
+                                                        
                                                         <!-- Input for uploading a new image -->
-                                                        <input type="file" class="form-control" name="images" data-index="<%= i %>" onchange="previewImage(event, <%= i %>)" />
-                                                        <div id="image-preview-container-<%= i %>" class="image-preview-container"></div>
+                                                        <input type="file" class="form-control" name="images" accept="image/*" id="image-input-<%= i %>" onchange="previewImage(event, <%= i %>)" />
+                                                        
+                                                        <!-- Hidden input specifying the index for this image upload -->
+                                                        <input type="hidden" name="imageIndexes[]" value="<%= i %>">
                                                     </div>
                                                 <% } %>
                                             </div>
                                         </div>
-                                        
+                                             
 
                                         <div class="text-center">
                                             <br>
@@ -287,24 +287,47 @@
 
 <script>
     // Preview for Primary Image
-    function previewPrimaryImage(event) {
-        const output = document.getElementById('primaryImagePreview');
-        output.src = URL.createObjectURL(event.target.files[0]);
-        output.style.display = 'block';
-    }
+    // function previewPrimaryImage(event) {
+    //     const output = document.getElementById('primaryImagePreview');
+    //     output.src = URL.createObjectURL(event.target.files[0]);
+    //     output.style.display = 'block';
+    // }
 
-    // Preview for Additional Images
-    function previewImage(event, index) {
-        const output = document.getElementById(`image-preview-container-${index}`);
-        const img = document.createElement('img');
-        img.src = URL.createObjectURL(event.target.files[0]);
-        img.classList.add('image-preview');
-        
-        // Clear previous image and append new preview
-        output.innerHTML = '';
-        output.appendChild(img);
-        output.style.display = 'block';
+    // // Preview for Additional Images
+  
+    // Preview the selected image for the given index
+function previewImage(event, index) {
+    const inputFile = event.target;
+    const previewContainer = document.getElementById(`image-preview-container-${index}`);
+    const previewImage = document.getElementById(`image-preview-${index}`);
+
+    // Clear any existing preview image
+    previewContainer.innerHTML = '';
+
+    // If a file is selected, create a new preview
+    if (inputFile.files && inputFile.files[0]) {
+        const reader = new FileReader();
+
+        reader.onload = function() {
+            // Create an img element for the preview
+            const img = document.createElement('img');
+            img.src = reader.result;
+            img.classList.add('image-preview');
+            
+            // Append to the container
+            previewContainer.appendChild(img);
+            
+            // Optionally, update the hidden input if you want to track the file state
+            if (previewImage) {
+                previewImage.src = reader.result; // Update the preview image immediately
+            }
+        };
+
+        // Read the file as data URL (for image preview)
+        reader.readAsDataURL(inputFile.files[0]);
     }
+}
+
 
 
 </script>
