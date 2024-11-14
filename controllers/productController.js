@@ -70,31 +70,28 @@ const loadEditProduct = async (req, res) => {
 
 const editProduct = async (req, res) => {
     try {
-        const { name, description, price, stock, category } = req.body;
+        const { name, description, price, stock, category, existingImages } = req.body;
 
-        // Handle primary image upload if available
-        let primaryImage = req.file ? await handleImageUpload(req.file) : null;
+        // Initialize an array to store the updated image URLs
+        const updatedImages = existingImages ? [...existingImages] : [];
 
-        // Handle additional images upload if available
-        let additionalImages = [];
-        if (req.files && req.files.additionalImages) {
-            for (let file of req.files.additionalImages) {
-                const imageUrl = await handleImageUpload(file);
-                additionalImages.push(imageUrl);
-            }
+        // Check if there are new images uploaded and update them based on index
+        if (req.files && req.files.length > 0) {
+            req.files.forEach((file, index) => {
+                updatedImages[index] = file.path; 
+            });
         }
 
-        // Find the product and update
+        
         const updatedProduct = await Product.findByIdAndUpdate(
-            req.params.id, 
+            req.params.id,
             {
                 name,
                 description,
                 price,
                 stock,
                 category,
-                primaryImage: primaryImage || undefined, // Only update if provided
-                additionalImages: additionalImages.length > 0 ? additionalImages : undefined
+                images: updatedImages.filter((url) => url), // Remove any undefined URLs
             },
             { new: true }
         );
@@ -108,7 +105,8 @@ const editProduct = async (req, res) => {
         console.error(error);
         res.status(500).send('Internal server error');
     }
-}
+};
+
 
 // const deleteProduct = async (req, res) => {
 //     try {

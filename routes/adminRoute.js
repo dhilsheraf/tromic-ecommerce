@@ -33,7 +33,7 @@ router.get("/products/add", productController.loadAddProduct)
 router.post("/products/add", upload.array('images',4), productController.addProduct);
 
 router.get('/products/edit/:id', productController.loadEditProduct)
-router.post('/products/edit/:id', productController.editProduct);
+router.post('/products/edit/:id', upload.array("images", 4),productController.editProduct);
 
 
 

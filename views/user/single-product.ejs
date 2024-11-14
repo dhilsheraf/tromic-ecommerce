@@ -27,7 +27,7 @@
                             <div class="swiper-wrapper">
                                 <!-- Primary Image -->
                                 <div class="swiper-slide">
-                                    <a href="<%= product.image[0] %>" class="single-img gallery-popup">
+                                    <a href="<%= product.images[0] %>" class="single-img gallery-popup">
                                         <img class="img-full" src="<%= product.images[0] %>" alt="Primary Product Image">
                                     </a>
                                 </div>
@@ -35,8 +35,8 @@
                                 <!-- Additional Images -->
                                 <% product.images.forEach(image => { %>
                                 <div class="swiper-slide">
-                                    <a href="<%= image %>" class="single-img gallery-popup">
-                                        <img class="img-full" src="<%= image %>" alt="Additional Product Image">
+                                    <a href="<%= images %>" class="single-img gallery-popup">
+                                        <img class="img-full" src="<%= images %>" alt="Additional Product Image">
                                     </a>
                                 </div>
                                 <% }); %>

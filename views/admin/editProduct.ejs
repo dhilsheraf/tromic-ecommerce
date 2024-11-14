@@ -192,23 +192,20 @@
                         <div class="col-12">
                             <div class="card mb-4">
                                 <div class="card-body">
-                                    <!-- Update form action to edit endpoint and add hidden input for product ID -->
+
                                     <form id="product-form" action="/admin/products/edit/<%= product._id %>" method="POST" enctype="multipart/form-data">
                                         <input type="hidden" name="product_id" value="<%= product._id %>">
                                         
-                                        <!-- Product Title -->
                                         <div class="product-form">
                                             <label for="product_name" class="form-label">Product Title</label>
                                             <input type="text" placeholder="Type here" class="form-control" id="product_name" name="name" required value="<%= product.name %>" />
                                         </div>
 
-                                        <!-- Description -->
                                         <div class="product-form">
                                             <label class="form-label">Description</label>
                                             <textarea placeholder="Type here" class="form-control" rows="4" name="description" required><%= product.description %></textarea>
                                         </div> 
 
-                                        <!-- Price and Stock Quantity -->
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 <div class="product-form">
@@ -224,7 +221,6 @@
                                             </div>
                                         </div>
 
-                                        <!-- Category -->
                                         <div class="product-form">
                                             <label class="form-label">Category</label>
                                             <select class="form-select" name="category" required>
@@ -234,26 +230,32 @@
                                             </select>
                                         </div>
 
-                                        <!-- Product Images -->
                                         <div class="product-form">
                                             <label class="form-label" style="color: rgb(0, 0, 0);">Product Images 4</label>
                                             <div class="row">
                                                 <% for (let i = 0; i < 4; i++) { %>
                                                     <div class="col-lg-3">
                                                         <label class="form-label" style="color: black;"><%= i === 0 ? 'Display image' : 'Other images' %></label>
-                                                        <input type="file" class="form-control" name="images" onchange="previewImage(event, <%= i + 1 %>)" />
-                                                        <div id="image-preview-container-<%= i + 1 %>" class="image-preview-container">
-                                                            <% if (product.images[i]) { %>
-                                                                <img src="<%= product.images[i] %>" class="image-preview" />
-                                                            <% } %>
-                                                        </div>
+                                        
+                                                        <!-- Display the existing image if available -->
+                                                        <% if (product.images[i]) { %>
+                                                            <img src="<%= product.images[i] %>" class="image-preview" />
+                                                            <!-- Hidden field to pass the current image URL to the back-end -->
+                                                            <input type="hidden" name="existingImages[]" value="<%= product.images[i] %>">
+                                                        <% } else { %>
+                                                            <!-- Empty hidden input if there’s no image -->
+                                                            <input type="hidden" name="existingImages[]" value="">
+                                                        <% } %>
+                                        
+                                                        <!-- Input for uploading a new image -->
+                                                        <input type="file" class="form-control" name="images" data-index="<%= i %>" onchange="previewImage(event, <%= i %>)" />
+                                                        <div id="image-preview-container-<%= i %>" class="image-preview-container"></div>
                                                     </div>
-                                                    
                                                 <% } %>
                                             </div>
                                         </div>
+                                        
 
-                                        <!-- Submit Buttons -->
                                         <div class="text-center">
                                             <br>
                                             <button type="submit" class="btn btn-submit rounded font-sm hover-up">Update Product</button>
@@ -318,18 +320,30 @@
 
 <script>
     // Preview for Primary Image
-    function previewPrimaryImage(event) {
-        const output = document.getElementById('primaryImagePreview');
-        output.src = URL.createObjectURL(event.target.files[0]);
-        output.style.display = 'block';
-    }
-
     // Preview for Additional Images
-    function previewAdditionalImage(event, index) {
-        const output = document.getElementById('additionalImagePreview' + index);
-        output.src = URL.createObjectURL(event.target.files[0]);
-        output.style.display = 'block';
+function previewImage(event, index) {
+    const previewContainer = document.getElementById(`image-preview-container-${index}`);
+    const imageFile = event.target.files[0];
+
+    // Clear any existing preview image
+    previewContainer.innerHTML = '';
+
+    if (imageFile) {
+        const reader = new FileReader();
+
+        reader.onload = function() {
+            const imgElement = document.createElement("img");
+            imgElement.src = reader.result;
+            imgElement.classList.add("image-preview");
+
+            // Append the preview image to the container
+            previewContainer.appendChild(imgElement);
+        };
+
+        reader.readAsDataURL(imageFile);
     }
+}
+
 </script>
 
 </html>
